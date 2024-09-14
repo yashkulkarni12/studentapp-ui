@@ -1,0 +1,34 @@
+pipeline {
+    agent any 
+    stages {
+        stage('Pull') { 
+            steps {
+                git 'https://github.com/yashkulkarni12/yash_jenkins.git'
+            }
+        }
+        stage('Build') { 
+            steps {
+                sh '/usr/share/maven/bin/mvn clean package'
+            }
+        }
+        stage('Test') { 
+            steps {
+                withSonarQubeEnv(installationName: 'sonar', credentialsId: 'sonar-cred') {
+                    sh '/usr/share/maven/bin/mvn sonar:sonar'
+                }
+            }
+        }
+        stage('Quality-Gate') { 
+            steps {
+                timeout(10) {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+        stage('Deploy') { 
+            steps {
+             deploy adapters: [tomcat9(credentialsId: 'tomcat-cred', path: '', url: 'http://172.31.32.229:8080')], contextPath: '/', war: '**/*.war'
+            }
+        }
+    }
+}
