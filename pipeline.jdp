@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Pull') { 
             steps {
-                git 'https://github.com/yashkulkarni12/yash_jenkins.git'
+                git 'https://github.com/yashkulkarni12/studentapp-ui.git'
             }
         }
         stage('Build') { 
@@ -27,7 +27,7 @@ pipeline {
         }
         stage('Deploy') { 
             steps {
-             deploy adapters: [tomcat9(credentialsId: 'tomcat-cred', path: '', url: 'http://172.31.32.229:8080')], contextPath: '/studentapp-ui/target', war: '**/*.war'
+             deploy adapters: [tomcat9(credentialsId: 'tomcat-cred', path: '', url: 'http://172.31.32.229:8080')], contextPath: '/', war: '**/*.war'
             }
         }
     }
