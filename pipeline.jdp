@@ -27,7 +27,7 @@ pipeline {
         }
         stage('Deploy') { 
             steps {
-            deploy adapters: [tomcat9(credentialsId: 'tomcat-cred', path: '', url: 'http://172.31.7.230:8080')], contextPath: '//jenkins_trial/target/studentapp-2.2-SNAPSHOT.war', war: '**/*.war'
+            deploy adapters: [tomcat9(credentialsId: 'tomcat-cred', path: '', url: 'http://172.31.7.230:8080')], contextPath: '/', war: '**/*.war'
             }
         }
     }
